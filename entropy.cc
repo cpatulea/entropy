@@ -10,7 +10,6 @@
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
-static const char kDevice[] = "/dev/sda1";
 static const size_t kBlockSize = 65536;
 
 static float entropy(const uint8_t block[kBlockSize]) {
@@ -38,8 +37,15 @@ static float entropy(const uint8_t block[kBlockSize]) {
 	return h;
 }
 
-int main(void) {
-	int fd = open(kDevice, O_RDONLY | O_LARGEFILE);
+int main(int argc, char **argv) {
+	if (argc != 2) {
+		printf("usage: %s <device>\n", argv[0]);
+		return 1;
+	}
+	
+	const char * const device = argv[1];
+	
+	int fd = open(device, O_RDONLY | O_LARGEFILE);
 	if (fd < 0) {
 		perror("open");
 		return 1;
