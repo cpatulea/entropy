@@ -47,7 +47,7 @@ int main(void) {
 	
 	uint8_t block[kBlockSize];
 	ssize_t bytes;
-	while ((bytes = read(fd, block, kBlockSize)) == kBlockSize) {
+	while ((bytes = read(fd, block, kBlockSize)) == (ssize_t)kBlockSize) {
 		float h = entropy(block);
 		printf("%.04f\n", h);
 	}
