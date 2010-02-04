@@ -17,7 +17,7 @@ static float entropy(const uint8_t block[kBlockSize]) {
 	uint16_t histogram[256];
 	
 	// Ensure no histogram overflow.
-	BOOST_STATIC_ASSERT((1 << (8 * sizeof(histogram[0]))) >= kBlockSize);
+	BOOST_STATIC_ASSERT((1ULL << (8 * sizeof(histogram[0]))) >= kBlockSize);
 
 	// Compute block histogram.
 	memset(histogram, 0, sizeof(histogram));
