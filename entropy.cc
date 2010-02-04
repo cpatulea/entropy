@@ -26,12 +26,12 @@ static float entropy(const uint8_t block[kBlockSize]) {
 	}
 	
 	// Compute block entropy.
-	static const float LOG2 = logf(2.f);
+	static const float ONE_OVER_LOG2 = 1.f / logf(2.f);
 	float h = 0.f;
 	for (size_t i = 0; i < ARRAY_SIZE(histogram); i++) {
 		float p_x = float(histogram[i]) / kBlockSize;
 		if (p_x > 0) {
-			h += -p_x * logf(p_x) / LOG2;
+			h += -p_x * logf(p_x) * ONE_OVER_LOG2;
 		}
 	}
 	
