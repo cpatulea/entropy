@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 #include <boost/static_assert.hpp>
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
@@ -64,20 +65,37 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	ssize_t bytes;
-	while ((bytes = read(fd, block, kBlockSize)) == (ssize_t)kBlockSize) {
-		float h = entropy(block);
+	for (;;) {
+		ssize_t bytes;
+		float h;
+
+		bytes = read(fd, block, kBlockSize);
+		offset += kBlockSize;
+
+		if (bytes < 0) {
+			if (errno == EIO) {
+				printf("NaN\n");
+
+				// Try to skip bad sectors.
+				if (lseek64(fd, offset, SEEK_SET) != offset) {
+					perror("lseek64");
+					return 1;
+				}
+				
+				continue;
+			} else {
+				perror("read");
+				return 1;
+			}
+		} else if (bytes == 0) {
+			break;
+		} else if (bytes != kBlockSize) {
+			fprintf(stderr, "warning: discarded trailing %d bytes\n", bytes);
+			continue;
+		}
+		
+		h = entropy(block);
 		printf("%.04f\n", h);
-	}
-	
-	if (bytes < 0) {
-		perror("read");
-		return 1;
-	} else if (bytes == 0) {
-		fprintf(stderr, "EOF\n");
-	} else {
-		fprintf(stderr, "read: returned %d\n", bytes);
-		return 1;
 	}
 	
 	close(fd);
