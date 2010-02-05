@@ -28,8 +28,8 @@ static float entropy(const uint8_t block[kBlockSize]) {
 	static const float ONE_OVER_LOG2 = 1.f / logf(2.f);
 	float h = 0.f;
 	for (size_t i = 0; i < ARRAY_SIZE(histogram); i++) {
-		float p_x = float(histogram[i]) / kBlockSize;
-		if (p_x > 0) {
+		if (histogram[i]) {
+			float p_x = float(histogram[i]) / kBlockSize;
 			h += -p_x * logf(p_x) * ONE_OVER_LOG2;
 		}
 	}
