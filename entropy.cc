@@ -12,6 +12,7 @@
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
 static const size_t kBlockSize = 65536;
+static uint8_t block[kBlockSize];
 
 static float entropy(const uint8_t block[kBlockSize]) {
 	uint16_t histogram[256];
@@ -63,7 +64,6 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	uint8_t block[kBlockSize];
 	ssize_t bytes;
 	while ((bytes = read(fd, block, kBlockSize)) == (ssize_t)kBlockSize) {
 		float h = entropy(block);
