@@ -1,3 +1,4 @@
+#define _LARGEFILE64_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <math.h>
@@ -38,8 +39,12 @@ static float entropy(const uint8_t block[kBlockSize]) {
 }
 
 int main(int argc, char **argv) {
-	if (argc != 2) {
-		printf("usage: %s <device>\n", argv[0]);
+	off64_t offset = 0;
+	
+	if (argc == 3) {
+		offset = strtoull(argv[2], NULL, 0);
+	} else if (argc != 2) {
+		printf("usage: %s <device> [<start offset>]\n", argv[0]);
 		return 1;
 	}
 	
@@ -51,6 +56,13 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 	
+	if (offset) {
+		if (lseek64(fd, offset, SEEK_SET) != offset) {
+			perror("lseek64");
+			return 1;
+		}
+	}
+
 	uint8_t block[kBlockSize];
 	ssize_t bytes;
 	while ((bytes = read(fd, block, kBlockSize)) == (ssize_t)kBlockSize) {
