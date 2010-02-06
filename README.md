@@ -34,7 +34,7 @@ This shows that most of the drive is still intact, since the entropy on the dama
   <img src="/cpatulea/entropy/raw/master/entropy-example-tail.png" width="700" alt="Plot zoomed in on the end of the drives"/>
 </a>
 
-Here, we can see that the drives match up to the ~80<sup>th</sup> block from the end. The damaged drive contained a sequence of "12 34" while the good drive contained only "00"s. (I got lucky where was no real data there!)
+Here, we can see that the drives match up to the ~80<sup>th</sup> block from the end. The damaged drive contained a sequence of "12 34" while the good drive contained only "00"s. (I was lucky there was no real data there!)
 
 The only exception to that was the small spike at the end of the good drive (last data point). That is the md superblock, which contains some metadata for automatic RAID-5 array assembly at boot time. Luckily that data can be reconstructed fairly easily by looking at the superblock on the other array members.
 
