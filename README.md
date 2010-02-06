@@ -24,11 +24,15 @@ Entropy also has some useful practical properties:
 # Results
 This is the result of plotting the output of the utility on two drives, one good and one damaged, from the same RAID-5 array:
 
-![Plot comparing stripe entropy from a damaged drive to a good drive from the same RAID array](../../raw/master/entropy-example-full.png)
+<a href="/cpatulea/entropy/raw/master/entropy-example-full.png">
+  <img src="/cpatulea/entropy/raw/master/entropy-example-full.png" width="700" alt="Plot comparing stripe entropy from a damaged drive to a good drive from the same RAID array"/>
+</a>
 
 This shows that most of the drive is still intact, since the entropy on the damaged drive closely matches the entropy on the other. In my case, I knew that the area was somewhere near the end of the drive, so by zooming in to the far right of the plot, we can see where they start to differ:
 
-![Plot zoomed in on the end of the drives](../../raw/master/entropy-example-tail.png)
+<a href="/cpatulea/entropy/raw/master/entropy-example-tail.png">
+  <img src="/cpatulea/entropy/raw/master/entropy-example-tail.png" width="700" alt="Plot zoomed in on the end of the drives"/>
+</a>
 
 Here, we can see that the drives match up to the ~80<sup>th</sup> block from the end. The damaged drive contained a sequence of "12 34" while the good drive contained only "00"s. (I got lucky where was no real data there!)
 
